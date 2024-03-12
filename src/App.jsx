@@ -54,12 +54,7 @@ function getPreparedProducts(allProducts, filteredField) {
   return preparedProducts;
 }
 
-// getUserById(1);
-// getCategoryById(1);
-// console.log(products);
-
 export const App = () => {
-  // const [selectedProducts, setSelectedProducts] = useState([]);
   const [filteredField, setFilteredField] = useState({
     query: "",
     user: "All",
@@ -75,6 +70,10 @@ export const App = () => {
 
   const clearInput = () => {
     setFilteredField({ ...filteredField, query: "" });
+  };
+
+  const resetFilters = () => {
+    setFilteredField({ query: "", user: "All" });
   };
 
   return (
@@ -178,6 +177,7 @@ export const App = () => {
               <a
                 data-cy="ResetAllButton"
                 href="#/"
+                onClick={resetFilters}
                 className="button is-link is-outlined is-fullwidth"
               >
                 Reset all filters
