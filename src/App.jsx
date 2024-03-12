@@ -23,7 +23,7 @@ const products = productsFromServer.map((product) => {
 
   return {
     id: product.id,
-    name: category.title,
+    name: product.name,
     category: ` ${category.icon ? category.icon : ""} - ${category.title}`,
     user: user.name,
     userSex: user.sex,
@@ -36,12 +36,12 @@ function getPreparedProducts(allProducts, filteredField) {
 
   if (filteredField.query) {
     preparedProducts = preparedProducts.filter((product) => {
-      const foundPerson = product.user
+      const foundProduct = product.name
         .toLowerCase()
         .trim()
         .includes(filteredField.query.trim().toLowerCase());
 
-      return foundPerson;
+      return foundProduct;
     });
   }
 
@@ -59,7 +59,7 @@ function getPreparedProducts(allProducts, filteredField) {
 // console.log(products);
 
 export const App = () => {
-  const [selectedProducts, setSelectedProducts] = useState([]);
+  // const [selectedProducts, setSelectedProducts] = useState([]);
   const [filteredField, setFilteredField] = useState({
     query: "",
     user: "All",
@@ -67,7 +67,15 @@ export const App = () => {
 
   const visibleProducts = getPreparedProducts(products, filteredField);
 
-  // const isSelected = ({user.id}) => selectedProducts.
+  const handleInputChange = (event) => {
+    const { value } = event.target;
+
+    setFilteredField({ ...filteredField, query: value });
+  };
+
+  const clearInput = () => {
+    setFilteredField({ ...filteredField, query: "" });
+  };
 
   return (
     <div className="section">
@@ -110,22 +118,26 @@ export const App = () => {
                   data-cy="SearchField"
                   type="text"
                   className="input"
+                  value={filteredField.query}
+                  onChange={handleInputChange}
                   placeholder="Search"
-                  value="qwe"
                 />
 
                 <span className="icon is-left">
                   <i className="fas fa-search" aria-hidden="true" />
                 </span>
 
-                <span className="icon is-right">
-                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                  <button
-                    data-cy="ClearButton"
-                    type="button"
-                    className="delete"
-                  />
-                </span>
+                {filteredField.query && (
+                  <span className="icon is-right">
+                    {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                    <button
+                      data-cy="ClearButton"
+                      type="button"
+                      className="delete is-small"
+                      onClick={clearInput}
+                    />
+                  </span>
+                )}
               </p>
             </div>
 
